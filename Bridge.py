@@ -1,5 +1,6 @@
 #Import neccecary utilities
 from random import shuffle
+from scipy.special import binom
 
 #The main simple random bridge class
 class Bridge:
@@ -160,11 +161,12 @@ class Bridge:
         return self
 
     #ins:
-    #(int) verbose= Which level of "style" or "complexity" information has (verbose =0,1) more verbose=more complex
+    #(int) verbose= Which level of "style" or "complexity" information has (verbose =0,1,2) more verbose=more complex
     #(str) title= An optinal title parameter for verbose=1 plotting
     #outs:
     #Verbose=0 (default)=>Terminal plot of data printed
     #Verbose=1 => Plot data full screen in Matplotlib
+    #Verbose=2 => Plot data full screen in Matplotlib with weight coloring
     def graph(self,verbose=0,title=None):
         #Verbose=0 => Terminal plot of data
         if verbose==0:
@@ -188,7 +190,7 @@ class Bridge:
             #Add generated terminal graph to output
             print("\n".join(arr))
         
-        #Verbose=1 =>
+        #Verbose=1 => Plot data in Matplotlib
         if verbose==1:
             #Import matplotlib for plotting if neccecary
             #It is not imported earlier for optics reasons when not using this method
@@ -204,6 +206,27 @@ class Bridge:
             #Render the plot
             plt.show()
 
+        #Verbose=2 => Plot data in Matplotlib with weight coloring
+        if verbose==2:
+            #Import matplotlib for plotting if neccecary
+            #It is not imported earlier for optics reasons when not using this method
+            import matplotlib.pyplot as plt
+
+            #Plot the actual data in question
+            plt.plot(self.body)
+            #Place title if given, give default otherwise
+            if title!=None:
+                plt.title(title)
+            else:
+                plt.title("Size "+str(self.size)+" Simple Random Bridge with weight coloring")
+            #Add properly colored points at down verticies
+            for i in range(self.size):
+                if self.isDown(i):
+                    pr=self.probFlip(i)
+                    plt.scatter(i,self.body[i],c=(pr,0.1,1-pr))
+            #Render the plot
+            plt.show()
+    
     #ins:
     #(int) reps= How many times random Bridges should be added to self
     #outs:
@@ -245,3 +268,46 @@ class Bridge:
     def maximum(self):
         #Get the absolute value of each element then take the maximum
         return max([abs(self.body[i]) for i in range(self.size)])
+
+    #ins:
+    #(int) i=An index in the body array (mod self.size, possibly)
+    #outs:
+    #(Bridge) The same SRB rotated such that index i goes into the 0 spot
+    def rot(self,i):
+        #Get the new body of the Bridge by rotating elementwise, and normalizing so that self.body[0]=0
+        newBody=[self.body[(index+i)%self.size]-self.body[i] for index in range(self.size)]
+        #Return a new bridge with this given body
+        return Bridge(size=self.size,body=newBody)
+
+    #ins:
+    #(int) i=An index in the body array (mod self.size, possibly)
+    #outs:
+    #(float) A real number 0<output<1 that is the probability that index i will flip in an addition
+    def probFlip(self,i):
+        #If i is not down, then it cannot be flipped
+        if not self.isDown(i):
+            return 0
+        #The algorith used will be by counting the amount of bridges that flip i, then dividing by the total number of bridges
+        #Get a rotated version of the bridge so that the target index gets put first
+        newBridge=self.rot(i)
+        #Since the placement of the +s determines the placement of the -s, there are (n choose n/2) total bridges
+        return newBridge.probFlipHelper(index=0,height=0)/binom(self.size,self.size//2)
+
+    #ins:
+    #(int) index=the index that search is starting at
+    #(int) height=the current height at index of the SRB
+    #outs:
+    #The amount of SRBs there are that stay under self starting at index "index" and height "height"
+    def probFlipHelper(self,index,height):
+        #Check if there is enough time to return home to 0, eliminate branch if not
+        if self.size-index<abs(height):
+            return 0
+        #Return the bridge if it has been completed
+        if index==self.size:
+            return 1
+        #Check to make sure the trial bridge not passing the state bridge, eliminate branch if not
+        if height>self.body[index]:
+            return 0
+        #Split into two cases for next value of bridge, and add together the possibilities
+        return self.probFlipHelper(index+1,height+1)+self.probFlipHelper(index+1,height-1)
+
