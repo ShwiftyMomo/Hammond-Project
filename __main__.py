@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 #Make a random bridge of size 12
 B=Bridge(size=12)
 
-#print the bridge
+#Print the bridge
 print(B)
 
-#update the bridge 20 times
+#Update the bridge with 20 rounds of repeated addition
 B.itter(reps=20)
 
-#print the updated bridge
+#Print the updated bridge
 print(B)

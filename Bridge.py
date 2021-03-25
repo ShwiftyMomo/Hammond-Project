@@ -1,6 +1,7 @@
 #Import neccecary utilities
 from random import shuffle
 from scipy.special import binom
+from copy import deepcopy
 
 #The main simple random bridge class
 class Bridge:
@@ -161,6 +162,32 @@ class Bridge:
         return self
 
     #ins:
+    #(int) reps=The amount of times randome bridges will be added to self before the graph is made
+    #(bool) change=Whether or not the internal paramaters should change after this addition
+    #outs:
+    #(Bridge) the result of the addition of the bridge
+    #If change is true, the internal state of the bridge is also changed by the addition
+    #The graph of the result of the addition is shown, with red regions where the change occured
+    def addGraph(self,reps=1,change=True):
+        #Duplicate the current bridge so that it will not be altered under the itterative addition
+        B=deepcopy(self)
+        #Perform the desired repeated addition
+        B.itter(reps=reps)
+        #Import matplotlib.pyplot for plotting, as well as a neccecary helper function for pretty colors
+        import matplotlib.pyplot as plt
+        from helper_functions import adjust_lightness
+        #Choose a snazzy title for the plot
+        plt.title("Graph of SRB, along with change after "+str(reps)+" rounds of addition")
+        #Plot the SRB pre and post addition
+        plt.plot(B.body+[0],label="Post-addition",c=adjust_lightness("pink",0.8))
+        plt.plot(self.body+[0],label="Pre-addition")
+        plt.fill_between(range(self.size+1),self.body+[0],B.body+[0],facecolor="pink")
+        #Set up the legend and show the graph
+        plt.legend(loc="upper left")
+        plt.show()
+
+
+    #ins:
     #(int) verbose= Which level of "style" or "complexity" information has (verbose =0,1,2) more verbose=more complex
     #(str) title= An optinal title parameter for verbose=1 plotting
     #outs:
@@ -193,11 +220,9 @@ class Bridge:
         #Verbose=1 => Plot data in Matplotlib
         if verbose==1:
             #Import matplotlib for plotting if neccecary
-            #It is not imported earlier for optics reasons when not using this method
             import matplotlib.pyplot as plt
-
             #Plot the actual data in question
-            plt.plot(self.body)
+            plt.plot(self.body+[0])
             #Place title if given, give default otherwise
             if title!=None:
                 plt.title(title)
@@ -213,7 +238,7 @@ class Bridge:
             import matplotlib.pyplot as plt
 
             #Plot the actual data in question
-            plt.plot(self.body)
+            plt.plot(self.body+[0])
             #Place title if given, give default otherwise
             if title!=None:
                 plt.title(title)
@@ -310,4 +335,3 @@ class Bridge:
             return 0
         #Split into two cases for next value of bridge, and add together the possibilities
         return self.probFlipHelper(index+1,height+1)+self.probFlipHelper(index+1,height-1)
-
