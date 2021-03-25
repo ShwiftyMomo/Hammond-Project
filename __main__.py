@@ -4,10 +4,19 @@ import matplotlib.pyplot as plt
 import time
 
 
-t0=time.time()
-B=Bridge(size=500)
+N=100
+B=Bridge(size=N)
 B.itter(reps=10000)
-t1=time.time()
+sampleSize=1000
+maxes=0
+for i in range(sampleSize):
+    B.itter(reps=100)
+    maxes+=B.maximum()
+
+norm=maxes/sampleSize
+
+print(norm)
+
 
 
 

@@ -232,9 +232,16 @@ class Bridge:
             if 0 in minValues:
                 for i in range(self.size):
                     if i not in minValues:
-                        self.body[i]-2
+                        self.body[i]=self.body[i]-2
             else:
                 for i in minValues:
                     self.body[i]+=2
         #Return the now update self
         return self
+
+    #ins: none
+    #outs:
+    #(int) The maximum absolute value in self.body
+    def maximum(self):
+        #Get the absolute value of each element then take the maximum
+        return max([abs(self.body[i]) for i in range(self.size)])
