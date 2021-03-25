@@ -7,7 +7,7 @@ N=176
 #Get a set of 100 random bridges of size N
 bridges=[Bridge(size=N) for i in range(100)]
 #Give plot a snazzy title
-plt.suptitle("Stochastic Bridges before repeated addition")
+plt.suptitle("Simple Random Bridges before repeated addition")
 
 #Itterate through bridges and plot them
 for num in range(100):
@@ -27,7 +27,7 @@ plt.show()
 
 #Do the same process as before, just with this new data
 
-plt.suptitle("Stochastic Bridges after repeated addition")
+plt.suptitle("Simple Random Bridges after repeated addition")
 for num in range(100):
     plt.subplot(10,10,num+1)
     plt.xticks([])

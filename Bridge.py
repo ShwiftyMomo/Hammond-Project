@@ -1,7 +1,7 @@
 #Import neccecary utilities
 from random import shuffle
 
-#The main stochastic bridge class
+#The main simple random bridge class
 class Bridge:
     #ins:
     #(int) size=order of cyclic group brige operates over
@@ -62,7 +62,7 @@ class Bridge:
         #Intialalize the string that will be repeatedly acted upon then returned
         out=""
         #Adding verbal descriptions of Bridge
-        out+="Size "+str(self.size)+" stochastic Bridge:"
+        out+="Size "+str(self.size)+" Simple Randome Bridge:"
         out+="\n \t -Body: "+str(self.body)
         out+="\n"
 
@@ -200,7 +200,7 @@ class Bridge:
             if title!=None:
                 plt.title(title)
             else:
-                plt.title("Size "+str(self.size)+" Stochastic Bridge")
+                plt.title("Size "+str(self.size)+" Simple Random Bridge")
             #Render the plot
             plt.show()
 
