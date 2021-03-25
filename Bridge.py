@@ -147,13 +147,15 @@ class Bridge:
             if self.body[i]-other.body[i]==minimum:
                 if self.isDown(i):
                     minValues+=[i]
-        
-        #We now go through minValues perform addition
-        for i in minValues:
-            self.body[i]+=2
-        #We now rescase if neccecary, so that self.body[0]=0
+        #If 0 is in minValues, instead of pushing it up we push everything else down to keep normalization
         if 0 in minValues:
-            self.body=[self.body[i]-2 for i in range(self.size)]
+            for i in range(self.size):
+                if i not in minValues:
+                    self.body[i]-2
+        #Otherwise, we can just push up the targetted points
+        else:
+            for i in minValues:
+                self.body[i]+=2
         #return properly updated self
         return self
 
@@ -205,10 +207,34 @@ class Bridge:
     #ins:
     #(int) reps= How many times random Bridges should be added to self
     #outs:
+    #(Bridge) Self, after having been interanally updated
     #Internal data changed to simulate having added random Bridges to self reps times
     def itter(self,reps=1):
-        #Itterate reps times, and add random bridges of the correct size
-        for i in range(reps):
-            self.add(Bridge(self.size))
+        #Generate a list of 1s and -1s that will be shuffled to produce each bridge we will be adding to self
+        newSlopes=[-1 for i in range(self.size//2)]+[1 for i in range(self.size//2)]
 
-    
+        #Add new bridges to self reps times
+        for rep in range(reps):
+            #Shuffle the slopes to make a new bridge profile
+            shuffle(newSlopes)
+            #Set up the new bridge using the reccursive definition as in __init__
+            newBridge=[0]
+            for value in newSlopes[:-1]:
+                newBridge+=[newBridge[-1]+value]
+
+            #Go through the addition algorithm exactly as in .add, using this new bridge
+            minValues=[]
+            minimum=min([self.body[i]-newBridge[i] for i in range(self.size)])
+            for i in range(self.size):
+                if self.body[i]-newBridge[i]==minimum:
+                    if self.isDown(i):
+                        minValues+=[i]
+            if 0 in minValues:
+                for i in range(self.size):
+                    if i not in minValues:
+                        self.body[i]-2
+            else:
+                for i in minValues:
+                    self.body[i]+=2
+        #Return the now update self
+        return self
