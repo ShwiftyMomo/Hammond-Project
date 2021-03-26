@@ -107,18 +107,31 @@ One way that one might hope to understand the behavior of SRBs under addition wo
 
 In the below proposition and throughout, the probability is taken uniformly as $B$ is added with all test bridges $B_0$ of size $N$.
 
-\begin{proposition} Let $B$ be the SRB of size $N$ defined by $B(i):=(i\,\,\mathrm{mod}(2))$, which is well defined as there are no SRBs for which $N$ is odd. It holds that $\Pr[0\,\,\mathrm{flips}]=\frac{2}{N+2}$.
+\begin{proposition} Let $B$ be the SRB of size $N$ defined by $B(i):=(i\,\,\mathrm{mod}(2))$, which is well defined as there are no SRBs for which $N$ is odd. It holds that
+
+$$\Pr[0\,\,\mathrm{flips}]=\frac{8(N+1)}{(N+3)(N+4)}$$
 \end{proposition}
 
 \begin{proof} By the definition of probability we have that
 
-$$\Pr[0\,\,\mathrm{flips}]=\frac{|\{B_0 \,\, \mathrm{flips\,\, }0\}|}{|\{B_0\,\,\mathrm{of\,\,size\,\,N}\}|}$$
+\begin{equation}
+\Pr[0\,\,\mathrm{flips}]=\frac{|\{B_0 \,\, \mathrm{flips\,\, }0\}|}{|\{B_0\,\,\mathrm{of\,\,size\,\,N}\}|}
+\end{equation}
 
 Since $\sum_i (B(i+1)-B(i))=0$ we have that $B(i+1)-B(i)=1$ and $B(i+1)-B(i)=-1$ exactly $N/2$ times, the placement of the $N/2$ $+1s$ in $B(i+1)-B(i)$ exactly determines the placement of $B(i+1)-B(i)=-1$s. Thus, the total amount of SRBs of size $N$ is ${N \choose N/2}$.
 
 Any bridge $B_0$ that never intersects $B$ will flip $0$ since then $\max(B_0(i)-B(i))=0=B_0(0)-B(0)$. As discussed above any bridge can be determined by the distribution of $+1$s and $-1$s in $B_0(i+1)-B_0(i)$. $B_0$ will not intersect $B$ if and only if the number of $-1s$ in any intial segment of $B_0(i)$s if greater or equal to the number of $+1$s.
 
-These sorts of sequences of $\pm1$s are known as Dyck words, and it is well known that the amount of Dyck words of length $N$ is exactly $\frac{2}{N+2}{N\choose N/2}$ \cite{duchon2000enumeration}
+These sorts of sequences of $\pm1$s are known as Dyck words on $N+2$ letters, and it is well known that the amount of Dyck words on $N+2$ letters is exactly $\frac{2}{N+4}{N+2\choose (N+2)/2}$\cite{duchon2000enumeration}.
+
+Plugging all this into (1), we get that
+
+\begin{align*}
+\Pr[0\,\,\mathrm{flips}]&=\frac{1}{{N \choose N/2}}\left(\frac{2}{N+4}{N+2\choose (N+2)/2}\right)\\
+&=\frac{8(N+1)}{(N+3)(N+4)}
+\end{align*}
+
+as desired
 \end{proof}
 
 \begin{figure}[h!]
@@ -129,11 +142,11 @@ These sorts of sequences of $\pm1$s are known as Dyck words, and it is well know
 
 As a simple corollary, we arrive at a general lower bound for how likely a point is to be flipped, if it is (one of) the points the lowest in the image.
 
-\begin{corollary} For any bridge $B$ and index $i$, if $B(i)=\min_jB(j)$ then $\Pr[i \mathrm{\,\, flips}]\geq \frac{2}{N+2}$.
+\begin{corollary} For any bridge $B$ and index $i$, if $B(i)=\min_jB(j)$ then $\Pr[i \mathrm{\,\, flips}]\geq \frac{8(N+1)}{(N+3)(N+4)}$.
 \end{corollary}
 \begin{proof} If we define a new Bridge $B'$ by $B'(j):=B(j+i)-B(i)$, then clearly every bridge with the Dyck word property as in the proof of Proposition 1 will once again not intersect $B'$, since by assumtion of minimality we have that $B'(j)\geq0$ uniformly. Thus,
 
-$$|\{B_0 \,\, \mathrm{flips\,\, }i\}|\geq \frac{2}{N+2}{N\choose N/2}$$
+$$|\{B_0 \,\, \mathrm{flips\,\, }i\}|\geq \frac{2}{N+4}{N+2\choose (N+2)/2}$$
 
 and plugging this into
 
@@ -141,6 +154,27 @@ $$\Pr[i\,\,\mathrm{flips}]=\frac{|\{B_0 \,\, \mathrm{flips\,\, }i\}|}{|\{B_0\,\,
 
 we are done.
 \end{proof}
+
+After showing that the minimum value has a large enough chance of being picked, we now bound how likely it can be for the others to be flipped. Before being able this proposition, however, a technical lemma is needed.
+
+\begin{lemma}
+
+For even $N$ and $0\leq m\leq N/2$ it holds that
+$$\sup_{l}\left[\sum_{\substack{j\geq m \\ j\equiv l \,\,\mathrm{mod}(2)}}{l \choose \frac{l+j}{2}}+{N-l \choose \frac{N-l+j}{2}}\right]=1+{N-m \choose N/2}$$
+\end{lemma}
+\begin{proof} Proof is not ready yet, needs to be finished
+\end{proof}
+
+\begin{proposition} Let $B$ be a size $N$ SRB, $i\in \Z/N\Z$, and $\delta_i:=B(i)-\left(\min_{j}B(j)\right)$. It holds that
+
+$$\Pr[i\,\,\mathrm{flips}]\leq \frac{{N-\delta_i \choose N/2}}{{N \choose N/2}}$$
+
+\end{proposition}
+
+\begin{proof} This follows from looking at which curves minimize the probability for a given placement of $\min_{j}B(j)$, which yields the expression in Lemma 1 when the computation is carried out. The proof will be fleshed out when I have time.
+\end{proof}
+
+
 \bibliographystyle{plain}
 \bibliography{ref}
 
