@@ -10,3 +10,6 @@ The Bridge class taken in two paramaters, the number of points in the SRB (size)
 
 Details on all of the methods in the Bridge class, what they do, and how they work, is explained relatively clearly in the Bridge.py file its self.
 
+## LaTeX Write up
+
+In a seperate file a LaTeX write up of the current progress on the project. It includes definitions, proofs, and abundant graphs

@@ -20,7 +20,7 @@
 
 
 \title{Hammond's Project and Simple Random Graphs}
-\author{by Alan Hammond, Milo Moses, Samuel Packman, Emma Lynch, Benjamin Lemkin}
+\author{by Alan Hammond, Benjamin Lemkin, Emma Lynch, Milo Moses, Samuel Packman}
 \begin{document}
 \maketitle
 
@@ -82,7 +82,7 @@ The main interest of this paper is the result of repeated addition of a template
 One natural phenominon to observe the probability that any given SRB appears after large rounds of repeated addition. A sampling of 100 random SRBs of size 176 before and after 10,000 rounds of repeated addition by random SRBs is shown in Figure 3.
 
 \begin{figure}[h!]
-\caption{An SRB after repeated addition}
+\caption{100 SRBs after repeated addition}
 \centering
 \includegraphics[width=.75\textwidth]{Figure_3}
 \end{figure}
@@ -155,25 +155,80 @@ $$\Pr[i\,\,\mathrm{flips}]=\frac{|\{B_0 \,\, \mathrm{flips\,\, }i\}|}{|\{B_0\,\,
 we are done.
 \end{proof}
 
-After showing that the minimum value has a large enough chance of being picked, we now bound how likely it can be for the others to be flipped. Before being able this proposition, however, a technical lemma is needed.
+\section{Failed approaches}
 
-\begin{lemma}
+In this section, we lay out directions that have been attempted in the solving of the above listed problems and why they are not effective.
 
-For even $N$ and $0\leq m\leq N/2$ it holds that
-$$\sup_{l}\left[\sum_{\substack{j\geq m \\ j\equiv l \,\,\mathrm{mod}(2)}}{l \choose \frac{l+j}{2}}+{N-l \choose \frac{N-l+j}{2}}\right]=1+{N-m \choose N/2}$$
-\end{lemma}
-\begin{proof} Proof is not ready yet, needs to be finished
-\end{proof}
+The first strategy would be use Proposition 1 to show that it is likely that the minimal downed verticies are flipped, and then bound how likely all of the non-minimal downed verticies are to flip. More concretely, we can let $\delta_i:=B(i)-(\min_jB(j))$, and try to bound $\Pr[i \,\,\mathrm{flips}]$ in terms of $N$ and $\delta_i$ only. We show in the next proposition that this is not feasable
 
-\begin{proposition} Let $B$ be a size $N$ SRB, $i\in \Z/N\Z$, and $\delta_i:=B(i)-\left(\min_{j}B(j)\right)$. It holds that
-
-$$\Pr[i\,\,\mathrm{flips}]\leq \frac{{N-\delta_i \choose N/2}}{{N \choose N/2}}$$
-
+\begin{proposition} There exists a family $B_N$ of SRBs of size $N$ such that $\delta_i(N):=B_N(i)-(\min_jB_N(j))=\Omega(\sqrt{N})$ and $\Pr[i \,\, \mathrm{flips}]=\Omega(1/\sqrt{N})$.
 \end{proposition}
 
-\begin{proof} This follows from looking at which curves minimize the probability for a given placement of $\min_{j}B(j)$, which yields the expression in Lemma 1 when the computation is carried out. The proof will be fleshed out when I have time.
-\end{proof}
+\begin{remark}
+Seeing as every bound on the probability that the minimal vertex $i$ flips will be at least on the order of $\frac{1}{\sqrt{N}}$, we see that the best that uniform bounds on $\Pr[i \,\, \mathrm{flips}]$ will do is prove that under repeated addition $\E[\max_i|B(i)|]=O(\sqrt{N})$  which also follows directly from the Central Limit Theorem.
+\end{remark}
 
+\begin{proof}[Proof of Proposition 2] Throughout this proof we assume that $N\equiv0\,\,\mathrm{mod}(4)$, since the case $N\equiv 2\,\,\mathrm{mod}(4)$ is done similarly. Let $B_N$ be a family of curves with
+
+$$\delta_0(N)=\lfloor \sqrt{N}\rfloor - (\lfloor \sqrt{N}\rfloor\,\,\mathrm{mod}(2))$$
+
+and piecewise definition
+
+\begin{equation*}
+B_N(j)=
+\begin{cases}
+j & 0\leq j < \frac{N}{4}-\frac{\delta_0(N)}{2}\\
+\frac{N}{2}-\delta_0(N)-j & \frac{N}{4}-\frac{\delta_0(N)}{2}\leq j \leq \frac{N}{2}\\
+B_N(j)=B_N(N-j) & \frac{N}{2}<j<N
+\end{cases}
+\end{equation*}
+
+
+This SRB is shown in Figure 6.
+
+\begin{figure}[h!]
+\caption{An example of the SRBs $B_N$}
+\centering
+\includegraphics[width=\textwidth]{Figure_6}
+\end{figure}
+
+Using the same trick as in the proof of Proposition 1, we get that
+
+\begin{equation*}
+\Pr[0\,\,\mathrm{flips}]=\frac{1}{{N \choose N/2}}|\{B_0 \,\, \mathrm{flips\,\, }0\}|
+\end{equation*}
+
+By the definition of $B_N$ we know that the bridges $B_0$ that stay below $B_N$ are exactly those that stay below $B_N$ at $i=N/2$. Seeing as those SRBs that touch $B_N$ exactly at $B(N/2)=-\delta_0(200)$ fit this criteria, we get that there are at least
+
+$${N/2 \choose N/4-\frac{\delta_0(N)}{2}}^2$$
+
+bridges that satisfy the criteria. By an explicit calculation this means that
+
+\begin{equation*}
+\Pr[0\,\,\mathrm{flips}]\geq \frac{{N/2 \choose N/4}^2}{{N \choose N/2}\left(1-\frac{2m}{N}\right)^{2}} \prod_{j=1}^{\frac{m}{2}}\left(\frac{1-\frac{4j}{N}}{1+\frac{4j}{N}}\right)^{2}
+\end{equation*}
+
+By Strirlings approximation (see, for example, \cite{eger2014stirling}) we have that
+
+$$\frac{{N/2 \choose N/4}^2}{{N \choose N/2}}\sim \frac{4}{\sqrt{2\pi N}}$$
+
+and since $m/2<\sqrt{N}/2$ we have that
+
+\begin{align*}
+\prod_{j=1}^{\frac{m}{2}}\left(\frac{1-\frac{4j}{N}}{1+\frac{4j}{N}}\right)&=\exp\left(\sum_{j=1}^{m/2}\ln\left(\frac{1-\frac{4j}{N}}{1+\frac{4j}{N}}\right)\right)\\
+&\geq \exp\left(\sum_{j=1}^{\sqrt{N}/2}\ln\left(\frac{1-\frac{2}{\sqrt{N}}}{1+\frac{2}{\sqrt{N}}}\right)\right)\\
+&=\Omega\left( \exp\left(\sum_{j=1}^{\sqrt{N}/2}\frac{1}{\sqrt{N}}\right)\right)\\
+&=\Omega(1)
+\end{align*}
+
+which completes the proof.
+
+
+
+
+
+
+\end{proof}
 
 \bibliographystyle{plain}
 \bibliography{ref}
