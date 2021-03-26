@@ -2,14 +2,14 @@
 from Bridge import Bridge
 import matplotlib.pyplot as plt
 
-#Make a random bridge of size 12
-B=Bridge(size=12)
+#Initialize a bridge of size 22
+B=Bridge(size=22)
 
-#Print the bridge
+#Print the bridge to the terminal
 print(B)
 
-#Update the bridge with 20 rounds of repeated addition
-B.itter(reps=20)
+#Perform repeated addition 100 times
+B.itter(reps=100)
 
 #Print the updated bridge
 print(B)
