@@ -1,15 +1,6 @@
+from Player import Player
 import random
 import time
-#In this file I will write the class board,
-#as well as the mutateElement and getBestPath methods for it.
-
-class Player:
-    def __init__(self,strategy): #strategy is a function that imports the board and outputs a move
-        self.strategy = strategy
-
-    def move(self,body):
-        return self.strategy(body)
-
 
 class Board:
     def __init__(self, size, body = None):
@@ -115,28 +106,3 @@ class Board:
         bestPath = self.findBestPath()
         print("Score is " + str(bestPath[0][0]) + "\n" + "best path is " + str(bestPath[0][1]))
         return bestPath[0][0]
-
-
-def main(player1,player2,n = 15):
-    testBoard = Board(n)
-    return testBoard.game(player1,player2)
-
-def minI_Strategy(body):
-    for i in range(len(body)):
-        for j in range(len(body[i])):
-            if body[i][j] == 0:
-                return [i,j]
-    print("no valid move found")
-
-player1 = Player(minI_Strategy)
-player2 = Player(minI_Strategy)
-
-avgScore = 0
-numGames = 40
-for i in range(numGames):
-    #testBoard = Board(40)
-    #testBoard.randomizeBoard()
-    #avgScore += testBoard.findBestPath()[0][0]
-    avgScore += main(player1,player2,40)
-avgScore /= numGames
-print(avgScore)
