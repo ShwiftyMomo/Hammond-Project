@@ -2,4 +2,5 @@
 \contentsline {section}{\numberline {1}Introduction}{1}
 \contentsline {section}{\numberline {2}Flattening effect of repeated addition}{3}
 \contentsline {section}{\numberline {3}Probability of point specific flips under addition}{4}
-\contentsline {section}{\numberline {4}Failed approaches}{6}
+\contentsline {section}{\numberline {4}Interval addition}{6}
+\contentsline {section}{\numberline {5}Failed approaches}{6}

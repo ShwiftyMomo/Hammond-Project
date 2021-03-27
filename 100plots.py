@@ -23,7 +23,7 @@ for num in range(100):
 plt.show()
 
 #Go through each bridge and do the repeated addition algorithm 10,000 times
-[bridge.itter(reps=10000) for bridge in bridges]
+[bridge.intervalItter(reps=100) for bridge in bridges]
 
 #Do the same process as before, just with this new data
 

@@ -155,6 +155,30 @@ $$\Pr[i\,\,\mathrm{flips}]=\frac{|\{B_0 \,\, \mathrm{flips\,\, }i\}|}{|\{B_0\,\,
 we are done.
 \end{proof}
 
+\section{Interval addition}
+
+In this section we give another notion of adding bridges $B_2$ to other bridges $B_1$, dubbed $\mathit{interval \,\,addition}$. To begin our definition, we first let
+
+$$S=\{i\in \Z/N\Z \,\,|\,\, B_1(i)-B_2(i)=\min_j(B_1(j)-B_2(j))\}$$
+
+be the intersection points of $B_2$ when it ``slides up" to $B_1$. We define the interval addition $\tilde{B_1}$ of $B_2$ to $B_1$ to be $B_1(i)$ if $i\not\in S$. For any subset $A\subset S$ of consecutive indicies $S$, we define $\tilde{B_1}$ on $A$ to be chosen uniformly randomly from all functions $f:A\to \Z$ such that $f(A_{i})=B_1(A_{i})$ and $f(A_{f})=B_1(A_{f})$ and $f(i+1)-f(i)=\pm1$. Here $A_i$ and $A_f$ are the initial and final indicies in $A$, which must exist since $A$ is consecutive. An example is shown in Figure 6.
+
+
+\begin{figure}[h!]
+\caption{Example of SRB random interval addition}
+\centering
+\includegraphics[width=.7\textwidth]{Figure_6}
+\end{figure}
+
+
+Examples of SRBs under repeated interval addition are shown in Figure 7. As can be seen in comparison with the SRBs in Figures 2/3, we see the general pattern that this sort of addition works in a much slower timeframe. As a corollary, collecting convincing data about the behavior of bridges under repeated interval addition is significantly more difficult
+
+\begin{figure}[h!]
+\caption{SRBs after repeated interval addition}
+\centering
+\includegraphics[width=.7\textwidth]{Figure_7}
+\end{figure}
+
 \section{Failed approaches}
 
 In this section, we lay out directions that have been attempted in the solving of the above listed problems and why they are not effective.
@@ -184,12 +208,12 @@ B_N(j)=B_N(N-j) & \frac{N}{2}<j<N
 \end{equation*}
 
 
-This SRB is shown in Figure 6.
+This SRB is shown in Figure 8.
 
 \begin{figure}[h!]
 \caption{An example of the SRBs $B_N$}
 \centering
-\includegraphics[width=\textwidth]{Figure_6}
+\includegraphics[width=\textwidth]{Figure_8}
 \end{figure}
 
 Using the same trick as in the proof of Proposition 1, we get that
@@ -221,14 +245,10 @@ and since $m/2<\sqrt{N}/2$ we have that
 &=\Omega(1)
 \end{align*}
 
+
 which completes the proof.
-
-
-
-
-
-
 \end{proof}
+
 
 \bibliographystyle{plain}
 \bibliography{ref}

@@ -185,7 +185,9 @@ class Bridge:
         #Set up the legend and show the graph
         plt.legend(loc="upper left")
         plt.show()
-
+        #update self if change is true
+        if change:
+            self=B
 
     #ins:
     #(int) verbose= Which level of "style" or "complexity" information has (verbose =0,1,2) more verbose=more complex
@@ -335,3 +337,110 @@ class Bridge:
             return 0
         #Split into two cases for next value of bridge, and add together the possibilities
         return self.probFlipHelper(index+1,height+1)+self.probFlipHelper(index+1,height-1)
+
+    #ins:
+    #(Bridge) other=Bridge that will be added by ther interval method to self
+    #outs:
+    #(Bridge) self, with its interval paramaters changed
+    #As suggested above, the internal paramaters will change to reflect the addition
+    def intervalAdd(self,other):
+        #First, we make sure that lengths match up so addition makes sense
+        if self.size!=other.size:
+            raise Exception("Attempting to add Bridges of different sizes in add method")
+        #Get the minimum value that all values are being tested against
+        minimum=min([self.body[i]-other.body[i] for i in range(self.size)])
+        #Intitialise the collection of disjoint subsets
+        subsets=[]
+        #Initialise the indexing variable that will be updated in a non-linear fashion
+        i=0
+        while i<self.size:
+            #Detect collision and record the subset formed
+            if self.body[i]-other.body[i]==minimum:
+                #begin the new subset that will be formed
+                A=[i]
+                #End the itteration if this is a singleton
+                if i==self.size-1:
+                    subsets+=[A]
+                    break
+                #move on to next value of i
+                i+=1
+                while self.body[i]-other.body[i]==minimum:
+                    #Add the new overlap point to the subset
+                    A+=[i]
+                    #Stop looking if we have reached the end of the bridge
+                    if i==self.size-1:
+                        subsets+=[A]
+                        break
+                    #Move on to next value of i
+                    i+=1
+                
+                #Stop looking if we have reached the end of the bridge
+                if i==self.size-1:
+                    break
+                #Add the formed subset to subsets
+                subsets+=[A]
+            #move on to next value of i
+            i+=1
+        #Work on each subset with the helper method
+        for A in subsets:
+            self.intervalAddHelper(A)
+        
+        #Return the updated bridge
+        return self
+
+    #ins:
+    #(int) reps=The amount of times randome bridges will be added to self before the graph is made
+    #(bool) change=Whether or not the internal paramaters should change after this addition
+    #outs:
+    #(Bridge) the result of the addition (using interval algorithm) of the bridge
+    #If change is true, the internal state of the bridge is also changed by the addition
+    #The graph of the result of the addition is shown, with red regions where the change occured      
+    def intervalAddGraph(self, reps=1, change=True):
+        #Duplicate the current bridge so that it will not be altered under the itterative addition
+        B=deepcopy(self)
+        #Perform the desired repeated addition
+        B.intervalItter(reps=reps)
+        #Import matplotlib.pyplot for plotting, as well as a neccecary helper function for pretty colors
+        import matplotlib.pyplot as plt
+        from helper_functions import adjust_lightness
+        #Choose a snazzy title for the plot
+        plt.title("Graph of SRB, along with change after "+str(reps)+" rounds of interval addition")
+        #Plot the SRB pre and post addition
+        plt.plot(B.body+[0],label="Post-addition",c=adjust_lightness("pink",0.8))
+        plt.plot(self.body+[0],label="Pre-addition")
+        plt.fill_between(range(self.size+1),self.body+[0],B.body+[0],facecolor="pink")
+        #Set up the legend and show the graph
+        plt.legend(loc="upper left")
+        plt.show()
+        #update self if change is true
+        if change:
+            self=B
+    
+    #ins:
+    #(int) reps= How many times random Bridges should be added to self
+    #outs:
+    #(Bridge) Self, after having been interanally updated
+    #Internal data changed to simulate having added using interval algorithm to random Bridges to self reps times
+    def intervalItter(self,reps=1):
+        #Add random SRBs to bridge reps times
+        for i in range(reps):
+            self.intervalAdd(other=Bridge(size=self.size))
+        #Return self at the end
+        return self
+
+    #ins:
+    #(list) A=A subset of consecutive indicies of self
+    #outs:
+    #(Bridge) self, with its interval paramaters changed
+    #The interval A in self.body will be replaced with a random bridge with the same endpoints
+    def intervalAddHelper(self,A):
+        #find out how many more +1s/-1s will be needed in the random bridge
+        delta=self.body[A[0]]-self.body[A[-1]]
+        #create the sample of +1s/-1s appropriately
+        slopes=[1 for i in range((len(A)-delta-1)//2)]+[-1 for i in range((len(A)+delta-1)//2)]
+        #shuffle to create a random assortment of 1s and -1s
+        shuffle(slopes)
+        #Update the chosen region of body
+        for i in range(len(A)-1):
+            self.body[A[i+1]]=self.body[A[i]]+slopes[i]
+

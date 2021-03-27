@@ -1,15 +1,14 @@
-#Import neccecary Bridge class and plotting class
+#Import neccecary Bridge class
 from Bridge import Bridge
-import matplotlib.pyplot as plt
 
-#Initialize a bridge of size 22
-B=Bridge(size=22)
+#Make a random bridge of size 20
+B=Bridge(size=20)
 
-#Print the bridge to the terminal
+#Print the bridge
 print(B)
 
-#Perform repeated addition 100 times
-B.itter(reps=100)
+#Update the bridge
+B.itter(reps=20)
 
 #Print the updated bridge
 print(B)
