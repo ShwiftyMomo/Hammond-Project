@@ -130,6 +130,20 @@ class Bridge:
             return False
 
     #ins:
+    #(int) i=An index in the body array (mod self.size, possibly)
+    #outs:
+    #(bool) True or False depending on whether or not self.body[i] is "down" or "up"
+    def isUp(self,i):
+        #get point and surrounding values mod self.size
+        point=self.body[i%self.size]
+        surrounding=max(self.body[(i-1)%self.size],self.body[(i+1)%self.size])
+        #check if point<surrounding (i.e i is minimal)
+        if point>surrounding:
+            return True
+        else:
+            return False
+    
+    #ins:
     #(Bridge) other=Bridge that will be "added" to self in the canoncial way
     #outs:
     #The internal paramaters of self are adjusted to perform addition of self to other
@@ -381,10 +395,15 @@ class Bridge:
                 subsets+=[A]
             #move on to next value of i
             i+=1
+
+        #Stitch together first and last subset if their endpoints are cyclically adjacent
+        if (0 in subsets[0]) and (self.size-1 in subsets[-1]):
+            subsets+=[subsets[-1]+subsets[0]]
+            subsets=subsets[1:]
         #Work on each subset with the helper method
         for A in subsets:
             self.intervalAddHelper(A)
-        
+
         #Return the updated bridge
         return self
 
@@ -442,5 +461,5 @@ class Bridge:
         shuffle(slopes)
         #Update the chosen region of body
         for i in range(len(A)-1):
-            self.body[A[i+1]]=self.body[A[i]]+slopes[i]
+            self.body[A[(i+1)%self.size]]=self.body[A[i]]+slopes[i]
 
