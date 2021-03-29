@@ -64,7 +64,7 @@ class Bridge:
         #Intialalize the string that will be repeatedly acted upon then returned
         out=""
         #Adding verbal descriptions of Bridge
-        out+="Size "+str(self.size)+" Simple Randome Bridge:"
+        out+="Size "+str(self.size)+" Simple Random Bridge:"
         out+="\n \t -Body: "+str(self.body)
         out+="\n"
 
@@ -331,6 +331,7 @@ class Bridge:
         #The algorith used will be by counting the amount of bridges that flip i, then dividing by the total number of bridges
         #Get a rotated version of the bridge so that the target index gets put first
         newBridge=self.rot(i)
+
         #Since the placement of the +s determines the placement of the -s, there are (n choose n/2) total bridges
         return newBridge.probFlipHelper(index=0,height=0)/binom(self.size,self.size//2)
 

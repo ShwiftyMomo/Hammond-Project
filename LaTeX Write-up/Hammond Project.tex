@@ -157,7 +157,7 @@ we are done.
 
 A general tool used in the analysis of flip probabilities is finding curves whose flip probabilities are on a known side of the starting curve, and are hopefully easier to analyse. These sorts of deformation results are very powerful, and the following conjecture would be an extremely useful variant:
 
-\begin{conjecture}[Deformation Lemma] Let $B$ be an SRB of size $N$, $i$ a downed index such that $B(i_1)=\max_{j\,\,\mathrm{down}}B(j)$ and similarly $i_2$ a downed index such that $B(i_2)=\min_{j\,\,\mathrm{down}}B(j)$. Further, let
+\begin{conjecture}[Deformation Lemma] Let $B$ be an SRB of size $N$, $i_1$ a downed index such that $B(i_1)=\min_{j\,\,\mathrm{down}}B(j)$ and similarly $i_2$ a upped index such that $B(i_2)=\max_{j\,\,\mathrm{up}}B(j)$. Further, let
 
 $$\tilde{B}(j)=
 \begin{cases}
@@ -166,12 +166,12 @@ B(j)+2 & j=i_1\\
 B(j)-2 & j=i_2
 \end{cases}$$
 
-If $B(i_2)< B(i_1)$, then
+If $B(i_1)+2\leq B(i_2)-2$, then
 
-$$\Pr[k\mathrm{\,\,flips\,\,in\,\, }\tilde{B}]< \Pr[k\mathrm{\,\,flips\,\,in\,\, }B]$$
+$$\Pr[0\mathrm{\,\,flips\,\,in\,\, }\tilde{B}]\leq \Pr[0\mathrm{\,\,flips\,\,in\,\, }B]$$
 \end{conjecture}
 
-This conjecture has been checked for 10,000 size 18 SRBs, 2,000 size 20 SRBs, and 50 size 24 SRBs. Computing exact probabilities becomes difficult in larger curves since it is proportional to ${N \choose N/2}$, which is exponential with respect to $N$. This conjecture is also expected to hold with the assumption that $B(i_1)=\max_{j\,\,\mathrm{down}}B(j)$ and $B(i_2)=\min_{j\,\,\mathrm{down}}B(j)$ removed, but computationally this is the simplest and fastest way to find doubles of indicies with $B(i_2)<B(i_1)$. This conjecture is also expected to hold with all the strict innequalities replaced with less than or equals.
+Evidence for, and reason to be skeptical about, this lemma can be found in the ``Failed Methods" section
 
 Since $\mathbb{E}_{j\in\Z/NZ}[B(j)]=\mathbb{E}_{j\in\Z/NZ}[\tilde{B}(j)]$, this lemma can be used to create the curve that maximizes/minimizes the probability that $k$ flips for a given value of $\mathbb{E}_{j\in\Z/NZ}[B(j)]$.
 
@@ -268,6 +268,24 @@ and since $m/2<\sqrt{N}/2$ we have that
 
 which completes the proof.
 \end{proof}
+
+As of now, the strategy of deformations (as seen in Conjecture 2) has not been successful. The most natural way to state the deformation conjecture would be to remove the condition $B(i_1)=\mathrm{min}_{j\,\,\mathrm{down}}B(j)$ and $B(i_2)=\mathrm{nax}_{j\,\,\mathrm{up}}B(j)$. Flipping a low vertex up and a high vertex down should always result in the increase of probability 0 flips. This conjecture was beleived for a long time, but here is strong counterexample:
+
+\begin{figure}[h!]
+\caption{A counterexample to the first deformation conjecture}
+\centering
+\includegraphics[width=\textwidth]{Figure_9}
+\end{figure}
+
+Here, we have
+
+$$\Pr[0\,\,\mathrm{flips\,\,in\,\, B}]\approx 0.004263$$
+
+and
+
+$$\Pr[0\,\,\mathrm{flips\,\,in\,\, \tilde{B}}]\approx 0.004271$$
+
+In particular, $\Pr[0\,\,\mathrm{flips\,\,in\,\, B}]<\Pr[0\,\,\mathrm{flips\,\,in\,\, \tilde{B}}]$
 
 
 \bibliographystyle{plain}
